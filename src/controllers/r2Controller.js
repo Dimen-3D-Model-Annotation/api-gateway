@@ -1,9 +1,7 @@
+const { default: axios } = require("axios");
 const { uploadToR2 } = require("../services/r2Service");
 
 async function uploadModel(req, res) {
-
-  // console.log(req.file);
-
   try {
     const file = req.file;
 
@@ -12,10 +10,6 @@ async function uploadModel(req, res) {
     }
 
     const r2Path = await uploadToR2(file);
-
-    // return res.status(200).json(r2Path);
-
-    // console.log(r2Path);
 
     // Pass to FastAPI backend for database storage
     const modelInfo = {
@@ -45,4 +39,37 @@ async function uploadModel(req, res) {
   }
 }
 
-module.exports = { uploadModel };
+
+const getModels = async (req, res) => {
+
+  try {
+    // Send the model info to FastAPI
+    const response = await axios.get("http://localhost:8000/models", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("FastAPI Error:", errorData);
+      return res.status(response.status).json(errorData);
+    }
+
+    const result = await response.json();
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Upload failed:", error);
+    res.status(500).json({ error: "Upload failed" });
+  }
+
+}
+
+const getModel = async (req, res) => {
+
+};
+
+const deleteModel = async (req, res) => {
+
+};
+
+module.exports = { uploadModel, getModels, getModel, deleteModel };
