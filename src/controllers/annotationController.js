@@ -1,5 +1,6 @@
 const { createAnnotation } = require("../services/annotationService");
 const { getAnnotationsByModelId } = require("../services/annotationService");
+const { getAnnotationsBySceneId } = require("../services/annotationService");
 
 const createAnnotationController = async (req, res) => {
 
@@ -26,4 +27,16 @@ const getAnnotationsByModelIdController = async (req, res) => {
   }
 };
 
-module.exports = { createAnnotationController, getAnnotationsByModelIdController };
+
+const getAnnotationsBySceneIdController = async (req, res) => {
+  try {
+    const { sceneId } = req.params;
+    const annotations = await getAnnotationsBySceneId(sceneId);
+    res.status(200).json(annotations);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to retrieve annotations" });
+  }
+};
+
+module.exports = { createAnnotationController, getAnnotationsByModelIdController, getAnnotationsBySceneIdController };

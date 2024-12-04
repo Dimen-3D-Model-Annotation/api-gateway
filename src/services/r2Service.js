@@ -1,6 +1,9 @@
 const r2Client = require("../config/r2Config");
 const { PutObjectCommand } = require("@aws-sdk/client-s3");
+const axios = require("axios");
 require("dotenv").config();
+
+const { MODEL_BASE_URL } = require("../config/config.js");
 
 const uploadToR2 = async (file) => {
   
@@ -19,4 +22,16 @@ const uploadToR2 = async (file) => {
   return `https://pub-${bucketId}.r2.dev/${key}`;
 };
 
-module.exports = { uploadToR2 };
+
+const getModelsBySceneId = async (sceneId) => {
+  try {
+    const response = await axios.get(`${MODEL_BASE_URL}/${sceneId}`, sceneId);
+    // console.log("response.data", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching models:", error);
+    throw error;
+  }
+};
+
+module.exports = { uploadToR2, getModelsBySceneId };

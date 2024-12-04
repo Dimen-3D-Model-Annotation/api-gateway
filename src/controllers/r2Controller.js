@@ -1,9 +1,14 @@
-const { default: axios } = require("axios");
+const { default: axios, get } = require("axios");
 const { uploadToR2 } = require("../services/r2Service");
+const { getModelsBySceneId } = require("../services/r2Service");
 
 async function uploadModel(req, res) {
   try {
     const file = req.file;
+    const sceneId = req.body.scene_id;
+
+    console.log("file", req.file);
+    console.log("scene_id", req.body.scene_id);
 
     if (!file) {
       return res.status(400).json({ error: "No file uploaded" });
@@ -15,6 +20,7 @@ async function uploadModel(req, res) {
     const modelInfo = {
       model_name: file.originalname,
       file_path: r2Path,
+      scene_id: sceneId
     };
 
     // Send the model info to FastAPI
@@ -40,8 +46,7 @@ async function uploadModel(req, res) {
 }
 
 
-const getModels = async (req, res) => {
-
+const getModelsController = async (req, res) => {
   try {
     // Send the model info to FastAPI
     const response = await axios.get("http://localhost:8000/models", {
@@ -61,15 +66,29 @@ const getModels = async (req, res) => {
     console.error("Upload failed:", error);
     res.status(500).json({ error: "Upload failed" });
   }
-
-}
-
-const getModel = async (req, res) => {
-
 };
 
-const deleteModel = async (req, res) => {
+const getModelController = async (req, res) => {};
 
+const deleteModelController = async (req, res) => {};
+
+const getModelsBySceneIdController = async (req, res) => {
+  // console.log("req", req.params);
+
+  try {
+    const { sceneId } = req.params;
+    const models = await getModelsBySceneId(sceneId);
+    res.status(200).json(models);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to retrieve models" });
+  }
 };
 
-module.exports = { uploadModel, getModels, getModel, deleteModel };
+module.exports = {
+  uploadModel,
+  getModelsController,
+  getModelController,
+  deleteModelController,
+  getModelsBySceneIdController,
+};

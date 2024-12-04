@@ -1,4 +1,4 @@
-const { default: axios } = require("axios");
+const { default: axios, get } = require("axios");
 const { ANNOTATION_BASE_URL } = require("../config/config.js");
 
 const createAnnotation = async (annotationData) => {
@@ -27,7 +27,18 @@ const getAnnotationsByModelId = async (modelId) => {
   }
 };
 
+const getAnnotationsBySceneId = async (sceneId) => {
+  try {
+    const response = await axios.get(`${ANNOTATION_BASE_URL}/${sceneId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching annotations:", error);
+    throw error;
+  }
+};
+
 module.exports = {
   createAnnotation,
   getAnnotationsByModelId,
+  getAnnotationsBySceneId,
 };
