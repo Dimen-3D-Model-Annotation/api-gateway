@@ -17,6 +17,28 @@ const createAnnotation = async (annotationData) => {
   }
 };
 
+const deleteAnnotation = async (id) => {
+  try {
+    const response = await axios.delete(`${ANNOTATION_BASE_URL}/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting annotation:", error);
+    throw error;
+  }
+};
+
+
+const updateAnnotation = async (id, annotationText) => {
+  try {
+    
+    const response = await axios.put(`${ANNOTATION_BASE_URL}/${id}`, annotationText);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating annotation:", error);
+    throw error;
+  }
+};
+
 const getAnnotationsByModelId = async (modelId) => {
   try {
     const response = await axios.get(`${ANNOTATION_BASE_URL}/${modelId}`);
@@ -41,4 +63,6 @@ module.exports = {
   createAnnotation,
   getAnnotationsByModelId,
   getAnnotationsBySceneId,
+  deleteAnnotation,
+  updateAnnotation
 };

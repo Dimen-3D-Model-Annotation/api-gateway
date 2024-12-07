@@ -1,6 +1,7 @@
 const { default: axios, get } = require("axios");
 const { uploadToR2 } = require("../services/r2Service");
 const { getModelsBySceneId } = require("../services/r2Service");
+const { MODEL_BASE_URL } = require("../config/config");
 
 async function uploadModel(req, res) {
   try {
@@ -24,7 +25,7 @@ async function uploadModel(req, res) {
     };
 
     // Send the model info to FastAPI
-    const response = await fetch("http://localhost:8000/models", {
+    const response = await fetch(`${MODEL_BASE_URL}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(modelInfo),
@@ -49,7 +50,7 @@ async function uploadModel(req, res) {
 const getModelsController = async (req, res) => {
   try {
     // Send the model info to FastAPI
-    const response = await axios.get("http://localhost:8000/models", {
+    const response = await axios.get(`${MODEL_BASE_URL}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });

@@ -10,6 +10,7 @@ const uploadToR2 = async (file) => {
   const bucketName = process.env.R2_BUCKET_NAME;
   const bucketId = process.env.R2_BUCKET_ID;
   const key = `models/${Date.now()}-${file.originalname}`; // Unique key for the file
+  console.log("key", key);
 
   const params = {
     Bucket: bucketName,

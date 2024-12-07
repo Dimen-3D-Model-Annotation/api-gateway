@@ -3,7 +3,8 @@ const { createAnnotationController } = require("../controllers/annotationControl
 const { getAnnotationsByModelIdController } = require("../controllers/annotationController");
 const { getAnnotationsBySceneIdController } = require("../controllers/annotationController");
 // const { getAnnotation } = require("../controllers/annotationController");
-// const { deleteAnnotation } = require("../controllers/annotationController");
+const { deleteAnnotationController } = require("../controllers/annotationController");
+const { updateAnnotationController } = require("../controllers/annotationController");
 
 const router = express.Router();
 
@@ -11,6 +12,7 @@ router.post("/", createAnnotationController);
 router.get("/:modelId", getAnnotationsByModelIdController);
 router.get("/:sceneId", getAnnotationsBySceneIdController);
 // router.get("/:id", getAnnotation);
-// router.delete("/:id", deleteAnnotation);
+router.delete("/:id", deleteAnnotationController);
+router.put("/:id", updateAnnotationController);
 
 module.exports = router;

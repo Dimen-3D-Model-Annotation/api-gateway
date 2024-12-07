@@ -3,7 +3,7 @@ const app = require("./app"); // Your Express app
 const initializeSocket = require("./src/middleware/socketMiddleware");
 
 require('dotenv').config();
-const PORT = process.env.PORT || 3500;
+const PORT = process.env.API_GATEWAY_PORT;
 
 const server = http.createServer(app);
 initializeSocket(server);

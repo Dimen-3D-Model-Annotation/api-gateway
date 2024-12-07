@@ -1,9 +1,10 @@
 const socketIO = require("socket.io");
+const { ANNOTATION_TOOL_URL } = require("../config/config");
 
 const initializeSocket = (server) => {
   const io = require("socket.io")(server, {
     cors: {
-      origin: "http://localhost:3002", // Allow your frontend's origin
+      origin: `${ANNOTATION_TOOL_URL}`, // Allow your frontend's origin
       methods: ["GET", "POST"], // Allowed HTTP methods
       credentials: true, // Allow credentials if needed
     },

@@ -1,6 +1,8 @@
 const { createAnnotation } = require("../services/annotationService");
 const { getAnnotationsByModelId } = require("../services/annotationService");
 const { getAnnotationsBySceneId } = require("../services/annotationService");
+const { updateAnnotation } = require("../services/annotationService");
+const { deleteAnnotation } = require("../services/annotationService");
 
 const createAnnotationController = async (req, res) => {
 
@@ -27,6 +29,30 @@ const getAnnotationsByModelIdController = async (req, res) => {
   }
 };
 
+const deleteAnnotationController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const annotation = await deleteAnnotation(id);
+    res.status(200).json(annotation);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to delete annotation" });
+  }
+};
+
+const updateAnnotationController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const annotation_text = req.body;
+    
+    const annotation = await updateAnnotation(id, annotation_text);
+    res.status(200).json(annotation);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to update annotation" });
+  }
+};
+
 
 const getAnnotationsBySceneIdController = async (req, res) => {
   try {
@@ -39,4 +65,5 @@ const getAnnotationsBySceneIdController = async (req, res) => {
   }
 };
 
-module.exports = { createAnnotationController, getAnnotationsByModelIdController, getAnnotationsBySceneIdController };
+module.exports = { createAnnotationController, getAnnotationsByModelIdController, 
+  getAnnotationsBySceneIdController, deleteAnnotationController, updateAnnotationController };
