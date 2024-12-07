@@ -1,21 +1,13 @@
-const express = require('express');
-const cors = require('cors');
-const morgan = require('morgan');
-
-const adminRoutes = require('./src/routes/adminRoute');
+const http = require("http");
+const app = require("./app"); // Your Express app
+const initializeSocket = require("./src/middleware/socketMiddleware");
 
 require('dotenv').config();
+const PORT = process.env.API_GATEWAY_PORT;
 
-const app = express();
-const PORT = process.env.PORT || 3500;
+const server = http.createServer(app);
+initializeSocket(server);
 
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(morgan('dev'));
-
-app.use('/api/users', adminRoutes);
-
-app.listen(PORT, () => {
-    console.log(`API Gateway server is running on http://localhost:${PORT}`);
+server.listen(PORT, () => {
+  console.log(`API Gateway server is running on http://localhost:${PORT}`);
 });
